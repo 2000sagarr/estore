@@ -50,11 +50,11 @@
                                     </div>
                                 </div>
                             </div>
-                            {% for product in  products%}
-                                <div class="col-md-4">
+                            {% for product in  page_object%}
+                            <div class="col-md-4">
                                 <div class="product-item">
                                     <div class="product-title">
-                                        <a href="#">{{product.name}}</a>
+                                        <a href="{% url 'product_details' product.id %}">{{product.name}}</a>
                                     </div>
                                     <div class="product-image" style = "height : 300px">
                                         <a href="product-detail.html">
@@ -63,7 +63,7 @@
                                         <div class="product-action">
                                             <a href="#"><i class="fa fa-cart-plus"></i></a>
                                             <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="#"><i class="fa fa-search"></i></a>
+                                            <a href="{% url 'product_details' product.id %}"><i class="fa fa-search"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-price" style="text-align : center">
@@ -80,15 +80,29 @@
                         <div class="col-md-12">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    {% if page_object.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" 
+                                                href="?page = {{page_object.previous_page_number}}" tabindex="-1">
+                                                Previous
+                                            </a>
+                                        </li>
+
+                                    {% endif %}
+
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">
+                                            {{page_object.number}}
+                                        </a>
                                     </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+                                    {% if page_object.has_next %}
+                                         <li class="page-item">
+                                            <a class="page-link" 
+                                                href="?page={{page_object.next_page_number}}">
+                                                Next
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>
@@ -119,7 +133,7 @@
                                 {% for product  in sidebar_products %}
                                 <div class="product-item">
                                     <div class="product-title">
-                                        <a href="#">{{product.name}}</a>
+                                        <a href="{% url 'product_details' product.id %}">{{product.name}}</a>
                                     </div>
                                     <div class="product-image" style = "height : 300px">
                                         <a href="product-detail.html">
@@ -128,7 +142,7 @@
                                         <div class="product-action">
                                             <a href="#"><i class="fa fa-cart-plus"></i></a>
                                             <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="#"><i class="fa fa-search"></i></a>
+                                            <a href="{% url 'product_details' product.id %}"><i class="fa fa-search"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-price" style="text-align : center">
@@ -143,29 +157,18 @@
                         <div class="sidebar-widget brands">
                             <h2 class="title">Our Brands</h2>
                             <ul>
-                                <li><a href="#">Nulla </a><span>(45)</span></li>
-                                <li><a href="#">Curabitur </a><span>(34)</span></li>
-                                <li><a href="#">Nunc </a><span>(67)</span></li>
-                                <li><a href="#">Ullamcorper</a><span>(74)</span></li>
-                                <li><a href="#">Fusce </a><span>(89)</span></li>
-                                <li><a href="#">Sagittis</a><span>(28)</span></li>
+                                {% for brand in  brand_names%}
+                                <li><a href="#">{{brand}}</a><span>(45)</span></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         
                         <div class="sidebar-widget tag">
-                            <h2 class="title">Tags Cloud</h2>
-                            <a href="#">Lorem ipsum</a>
-                            <a href="#">Vivamus</a>
-                            <a href="#">Phasellus</a>
-                            <a href="#">pulvinar</a>
-                            <a href="#">Curabitur</a>
-                            <a href="#">Fusce</a>
-                            <a href="#">Sem quis</a>
-                            <a href="#">Mollis metus</a>
-                            <a href="#">Sit amet</a>
-                            <a href="#">Vel posuere</a>
-                            <a href="#">orci luctus</a>
-                            <a href="#">Nam lorem</a>
+                            <h2 class="title">Tags</h2>
+                            {% for tag in tags %}
+                                <a href="#">{{tag}}</a>
+                            {% endfor %}
+                            
                         </div>
                     </div>
                     <!-- Side Bar End -->
